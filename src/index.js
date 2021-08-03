@@ -9,14 +9,9 @@ const authMiddleware = require('./middlewares/auth.middleware');
 const booksRouter = require('./routers/books.router');
 
 const app = express();
+app.use(express.json());
 
-app.use((req, res, next)  => {
-    console.log(req.body);
-
-    next();
-});
-
-// app.use(langMiddleware);
+app.use(langMiddleware);
 // app.use(authMiddleware);
 
 app.use('/books' ,booksRouter);

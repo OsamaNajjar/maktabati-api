@@ -1,9 +1,7 @@
 
 const langMiddleware = (req, res, next) => {
 
-    req.lang = req.query.lang.toUpperCase() || 'A';
-
-    console.log(req.lang);
+    req.lang = (req.query.lang || 'A').toUpperCase();
 
     next();
 

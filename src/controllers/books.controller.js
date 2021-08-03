@@ -51,8 +51,6 @@ exports.createNewBook = (req, res, next) => {
 
         const newBook = req.body;
 
-        console.log(newBook);
-
         return res.json(newBook);
           
     } catch {
