@@ -62,6 +62,14 @@ exports.createNewBook = (req, res, next) => {
 
 exports.updateBook = (req, res, next) => {
 
+    try {
+
+    } catch(error) {
+
+    }
+
+    return res.json({result: "updated"});
+
 };
 
 exports.deleteBook = (req, res, next) => {
