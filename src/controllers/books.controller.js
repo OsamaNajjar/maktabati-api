@@ -13,8 +13,8 @@ exports.getAllBooks = (req, res, next) => {
         return res.json(books.filter(b => b.year === +year));
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).send({ error: "Please try again later" });
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
     }
 
 };
@@ -33,14 +33,16 @@ exports.getBookByName = (req, res, next) => {
         const book = books.find(b => b.name === name);
 
         if(!book) {
-            return res.status(404).send();
+            const error = new Error();
+            error.httpStatusCode = 404;
+            throw error;
         }
 
         return res.json(book);
 
     } catch (error) {
-        console.log(error)
-        return res.status(500).send({ error: "Please try again later" });
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
     }
 
 }
@@ -53,9 +55,9 @@ exports.createNewBook = (req, res, next) => {
 
         return res.json(newBook);
           
-    } catch {
-        console.log(error)
-        return res.status(500).send({ error: "Please try again later" });
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
     }
 
 }
@@ -65,7 +67,8 @@ exports.updateBook = (req, res, next) => {
     try {
 
     } catch(error) {
-
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
     }
 
      res.json({result: "updated"});
