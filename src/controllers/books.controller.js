@@ -68,7 +68,7 @@ exports.updateBook = (req, res, next) => {
 
     }
 
-    return res.json({result: "updated"});
+     res.json({result: "updated"});
 
 };
 
