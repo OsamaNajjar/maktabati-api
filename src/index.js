@@ -7,6 +7,7 @@ const authMiddleware = require('./middlewares/auth.middleware');
 
 //Routers
 const booksRouter = require('./routers/books.router');
+const ReportsRouter = require('./routers/reports.router');
 
 
 const errorsController = require('./controllers/errors.controller');
@@ -23,6 +24,8 @@ app.use((req, res, next) => {
 // app.use(authMiddleware);
 
 app.use('/books' ,booksRouter);
+
+app.use('/reports' ,ReportsRouter);
 
 
 

@@ -45,7 +45,7 @@ exports.getBookByName = (req, res, next) => {
         return next(error);
     }
 
-}
+};
 
 exports.createNewBook = (req, res, next) => {
 
