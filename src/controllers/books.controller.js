@@ -3,14 +3,14 @@ exports.getAllBooks = (req, res, next) => {
 
     try {
 
-        const { year, name, auther} = req.query;
+        //const { year, name, auther} = req.query;
 
         const books = [
             {name: "book1" , year: 2020}
             , {name: "book2" , year: 2021}
         ];
 
-        return res.json(books.filter(b => b.year === +year));
+        return res.json(books);
 
     } catch (error) {
         console.log(error)
