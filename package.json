@@ -6,7 +6,7 @@
   "scripts": {
     "start": "env-cmd -f ./config/prod.env node src/index.js",
     "start:dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
-    "start:qlt": "env-cmd -f ./config/prod.env node src/index.js"
+    "start:qlt": "env-cmd -f ./config/qlt.env node src/index.js"
   },
   "author": "Osama Najjar",
   "license": "ISC",

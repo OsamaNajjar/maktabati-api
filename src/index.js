@@ -50,6 +50,21 @@ app.use((error, req, res, next) => {
 });
 
 const port = process.env.PORT || 7000;
-app.listen(port,() => {
-    console.log( chalk.green.inverse.bold(`Server is up and runung on port ${port}`));
+app.listen(port,() =>{
+
+    switch(process.env.API_SERVER_TYPE)
+    {
+        case 'DEVELOPMENT':
+            console.log(chalk.yellowBright
+                .inverse(`MAKTABATI API ${process.env.API_SERVER_TYPE} SERVER IS UP AND RUNNING ON PORT ${port}`));
+            break;
+        case 'QUALITY':
+            console.log(chalk.cyan
+                .inverse(`MAKTABATI API ${process.env.API_SERVER_TYPE} SERVER IS UP AND RUNNING ON PORT ${port}`));
+            break;
+        default :
+             console.log(chalk.greenBright
+                .inverse(`MAKTABATI API ${process.env.API_SERVER_TYPE} SERVER IS UP AND RUNNING ON PORT ${port}`));
+    }
+
 });
