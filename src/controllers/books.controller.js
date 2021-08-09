@@ -1,14 +1,14 @@
+const booksManager = require('../managers/books.manager');
 
-exports.getAllBooks = (req, res, next) => {
+
+
+exports.getAllBooks = async (req, res, next) => {
 
     try {
 
-        //const { year, name, auther} = req.query;
+        const { year, names , auther} = req.query;
 
-        const books = [
-            {name: "book1" , year: 2020}
-            , {name: "book2" , year: 2021}
-        ];
+        const books = await booksManager.getAllBooks(names);
 
         return res.json(books);
 

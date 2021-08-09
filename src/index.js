@@ -24,7 +24,6 @@ app.use((req, res, next) => {
 // app.use(authMiddleware);
 
 app.use('/books' ,booksRouter);
-
 app.use('/reports' ,ReportsRouter);
 
 
@@ -46,7 +45,7 @@ app.use((error, req, res, next) => {
     error.httpStatusCode = error.httpStatusCode || 500;
     error.message = error.httpStatusCode !== 404 ? 
         error.message || '' : 'Data NotFound!';
-    return res.status(error.httpStatusCode).json({ error : error.message });
+    return res.status(error.httpStatusCode).json({ error : error.message , data: error.errorsData || {} });
 });
 
 const port = process.env.PORT || 7000;
