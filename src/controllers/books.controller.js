@@ -19,19 +19,14 @@ exports.getAllBooks = async (req, res, next) => {
 
 };
 
-exports.getBookByName = (req, res, next) => {
+exports.getBookByName = async (req, res, next) => {
 
     try {
 
         const name = req.params.name;
 
-        const books = [
-            {name: "book1" , year: 2020}
-            , {name: "book2" , year: 2021}
-        ];
-
-        const book = books.find(b => b.name === name);
-
+        const book = await booksManager.getBookByName(name);
+        
         if(!book) {
             const error = new Error();
             error.httpStatusCode = 404;
@@ -53,7 +48,7 @@ exports.createNewBook = (req, res, next) => {
 
         const newBook = req.body;
 
-        return res.json(newBook);
+        return res.status(201).json(newBook);
           
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

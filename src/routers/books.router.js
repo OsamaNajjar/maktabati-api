@@ -3,7 +3,7 @@ const booksController = require('../controllers/books.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const { checkValidationResults } = require('../middlewares/utils.middleware');
 const { queryMiddleware } = require('@abujude/sgs-khadamati');
-const { check, query, body , validationResult} = require('express-validator');
+const { check, query, body , validationResult, param} = require('express-validator');
 
 const Router = express.Router();
 
