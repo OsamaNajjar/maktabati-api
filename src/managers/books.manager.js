@@ -16,24 +16,26 @@ exports.getAllBooks = async (ids, names ) => {
         //      quantity:5, row:'A-1', shelf:'4'}
         // ];
 
-        let conditions = {
-            id: ids || []
-          , name: names || []
+        console.log(names)
+
+        let whereClause = {};
+
+        if(ids && ids.length > 0) {
+            whereClause['id'] = ids;
+        }
+        if(names && names.length > 0) {
+            whereClause['name'] = names;
         }
 
-        if(ids || ids.length < 1) {
-            delete conditions.id;
-        }
+        console.log(whereClause);
 
-        console.log(conditions);
-
-        // conditions = {}
         const resultItems = await item.findAll({
-            where: conditions
+            where: whereClause
         });
 
-        return resultItems;
-        // return results.map(book => ModelMapper.mapBookDTO(book));
+        console.log(resultItems)
+
+        return resultItems;//.map(book => ModelMapper.mapBookDTO(book));
 
     } catch(error) {
         throw error;
