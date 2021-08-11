@@ -6,9 +6,9 @@ exports.getAllBooks = async (req, res, next) => {
 
     try {
 
-        const { year, names , auther} = req.query;
+        const { ids, year, names , auther} = req.query;
 
-        const books = await booksManager.getAllBooks(names);
+        const books = await booksManager.getAllBooks(ids , names);
 
         return res.json(books);
 

@@ -1,14 +1,14 @@
 const express = require('express');
 const booksController = require('../controllers/books.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const { checkValidationResults } = require('../middlewares/utils.middleware');
+const {checkValidationResults} = require('../middlewares/utils.middleware');
 const { queryMiddleware } = require('@abujude/sgs-khadamati');
-const { check, query, body , validationResult, param} = require('express-validator');
+const { check, query, body , param} = require('express-validator');
 
 const Router = express.Router();
 
 Router.get('/'
-    , queryMiddleware.split(['names'], ',')
+    , queryMiddleware.split(['ids','names'], ',')
     , query('year', 'Invalid book year!')
         .optional({checkFalsy: true})
         .isInt({min: 2000, max: new Date().getFullYear()})
