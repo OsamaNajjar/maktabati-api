@@ -15,7 +15,7 @@ module.exports =  Map.init({
         , autoIncrement: true
         , primaryKey: true
     }
-    , Size: {
+    , size: {
         type: Sequelize.STRING(20)
         , allowNull: false
         , validate: {

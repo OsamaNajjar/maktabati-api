@@ -1,16 +1,14 @@
 const booksManager = require('../managers/books.manager');
 
-
-
 exports.getAllBooks = async (req, res, next) => {
 
     try {
 
-        const { ids, year, names , auther} = req.query;
+        const { names , author, isbn, fromYear, toYear} = req.query;
 
-        const books = await booksManager.getAllBooks(ids , names);
+        const results = await booksManager.getAllBooks(names, author, isbn, fromYear, toYear);
 
-        return res.json(books);
+        return res.json(results);
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -19,21 +17,21 @@ exports.getAllBooks = async (req, res, next) => {
 
 };
 
-exports.getBookByName = async (req, res, next) => {
+exports.getBookByISBN = async (req, res, next) => {
 
     try {
 
-        const name = req.params.name;
+        const isbn = req.params.isbn;
 
-        const book = await booksManager.getBookByName(name);
+        const result = await booksManager.getBookByISBN(isbn);
         
-        if(!book) {
+        if(!result) {
             const error = new Error();
             error.httpStatusCode = 404;
             throw error;
         }
 
-        return res.json(book);
+        return res.json(result);
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -42,13 +40,15 @@ exports.getBookByName = async (req, res, next) => {
 
 };
 
-exports.createNewBook = (req, res, next) => {
+exports.createBook = async (req, res, next) => {
 
     try {
 
-        const newBook = req.body;
+        const bookDTO = req.body;
 
-        return res.status(201).json(newBook);
+        const result = await booksManager.createBook(bookDTO);
+
+        return res.status(201).json(result);
           
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

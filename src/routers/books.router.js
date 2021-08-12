@@ -8,16 +8,16 @@ const { check, query, body , param} = require('express-validator');
 const Router = express.Router();
 
 Router.get('/'
-    , queryMiddleware.split(['ids','names'], ',')
+    , queryMiddleware.split(['names'], ',')
     , query('year', 'Invalid book year!')
         .optional({checkFalsy: true})
         .isInt({min: 2000, max: new Date().getFullYear()})
     , checkValidationResults
     , booksController.getAllBooks);
 
-Router.get('/:name', booksController.getBookByName);
+Router.get('/:isbn', booksController.getBookByISBN);
 
-Router.post('/', authMiddleware, booksController.createNewBook);
+Router.post('/', authMiddleware, booksController.createBook);
 
 Router.put('/:name', authMiddleware, booksController.updateBook);
 

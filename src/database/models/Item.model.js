@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db-client');
 
-const map = require('./map');
-const borrow = require('./borrow');
+const book = require('./book.model');
+const map = require('./map.model');
+const borrow = require('./borrow.model');
 
 class Item extends Sequelize.Model {
 
@@ -91,6 +92,19 @@ const item = Item.init({
     sequelize
     , timestamps:true
     , indexes: [{unique: true, fields: ['name', 'year']}]
+});
+
+
+item.hasOne(book, {
+    foreignKey: 'itemId'
+    , onUpdate: 'CASCADE' 
+    , onDelete: 'CASCADE'
+});
+
+book.belongsTo(item, {
+    foreignKey: 'itemId'
+    , onUpdate: 'CASCADE' 
+    , onDelete: 'CASCADE'
 });
 
 item.hasOne(map, {

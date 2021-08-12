@@ -1,5 +1,5 @@
 
-module.exports = class Book {
+module.exports = class BookDTO {
 
     constructor(id, name, author, isbn, year, price, quantity, row, shelf) {
         this.id = id;
