@@ -1,11 +1,10 @@
 const { Op } = require('sequelize');
 
 const Item = require('../database/models/Item.model');
-const Book = require('../database/models/book.model');
+const Report = require('../database/models/report.model');
 const modelMapper = require('../models/model-mapper');
 
-
-exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
+exports.getAllReports = async (names, author, reportId,  reportType, fromYear, toYear ) => {
 
     try {
 
@@ -18,8 +17,11 @@ exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
         if(author) {
             whereClause['author'] = {[Op.substring]: author};
         }
-        if(isbn) {
-            whereClause['$Book.isbn$'] = {[Op.substring]: isbn};
+        if(reportId) {
+            whereClause['$Report.reportId$'] = {[Op.substring]: reportId};
+        }
+        if(reportType) {
+            whereClause['$Report.reportType$'] = {[Op.substring]: reportType};
         }
         if(fromYear) {
             whereClause['year'] = {[Op.gte]: fromYear};
@@ -31,12 +33,12 @@ exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
         const items = await Item.findAll({
             where: whereClause
             , include: {
-                model: Book
+                model: Report
                 , required: true
             }
         });
 
-        return items.map(book => modelMapper.mapToBookDTO(book.toJSON()));
+        return items.map(report => modelMapper.mapToReportDTO(report.toJSON()));
 
     } catch(error) {
         throw error;
@@ -44,24 +46,24 @@ exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
 
 }
 
-exports.getBookByISBN = async (isbn) => {
+exports.getReportByReportId = async (reportId) => {
 
     try {
 
-        const bookItem = await Item.findOne({
+        const reportItem = await Item.findOne({
             include: {
-                model: Book
+                model: Report
                 , where: {
-                    isbn: isbn
+                    reportId: reportId
                 }
             }
         });
 
-        if(!bookItem) {
+        if(!reportItem) {
             return undefined;
         }
 
-        return modelMapper.mapToBookDTO(bookItem.toJSON());
+        return modelMapper.mapToReportDTO(reportItem.toJSON());
 
     } catch(error) {
         throw error;
@@ -69,23 +71,23 @@ exports.getBookByISBN = async (isbn) => {
 
 }
 
-exports.createBook = async (bookDTO) => {
+exports.createReport = async (reportDTO) => {
 
     try {
         
-        if(!bookDTO) {
-            const error = new Error('Book required!');
+        if(!reportDTO) {
+            const error = new Error('Report required!');
             error.httpSatutsCode = 401;
             throw error;
         }
 
-        const bookModel = modelMapper.mapToBookModel(bookDTO);
+        const reportModel = modelMapper.mapToReportModel(reportDTO);
 
-        const result = await Item.create(bookModel, {
-            include: [Book] 
+        const result = await Item.create(reportModel, {
+            include: [Report] 
         });
 
-        return modelMapper.mapToBookDTO(result.toJSON());
+        return modelMapper.mapToReportDTO(result.toJSON());
 
     } catch(error) {
         throw error;

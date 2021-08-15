@@ -1,15 +1,14 @@
-exports.getAllReports = (req, res, next) => {
+const reportsManager = require('../managers/reports.manager');
+
+exports.getAllReports = async (req, res, next) => {
 
     try {
 
-        //const { id, name, year} = req.query;
+        const { names , author, reportId, reportType, fromYear, toYear} = req.query;
 
-        const Report = [
-            {id: 1 , name: "Report1" , year: 2020}
-            , {id: 2 , name: "Report2" , year: 2021}
-        ];
+        const results = await reportsManager.getAllReports(names, author, reportId, reportType, fromYear, toYear);
 
-        return res.json(Report);
+        return res.json(results);
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -18,28 +17,40 @@ exports.getAllReports = (req, res, next) => {
 
 };
 
-exports.getReportById = (req, res, next) => {
+exports.getReportByReportId = async (req, res, next) => {
 
     try {
 
-        const id = +req.params.id;
+        const reportId = req.params.reportId;
 
-        const reports = [
-            {id: 1 ,name: "Report1" , year: 2020}
-            , {id: 2 ,name: "Report2" , year: 2021}
-        ];
-
-        const report = reports.find(b => b.id === id);
-
-        if(!report) {
+        const result = await reportsManager.getReportByReportId(reportId);
+        
+        if(!result) {
             const error = new Error();
             error.httpStatusCode = 404;
             throw error;
         }
 
-        return res.json(report);
+        return res.json(result);
 
     } catch (error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
+
+};
+
+exports.createReport = async (req, res, next) => {
+
+    try {
+
+        const reportDTO = req.body;
+
+        const result = await reportsManager.createReport(reportDTO);
+
+        return res.status(201).json(result);
+          
+    } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
         return next(error);
     }

@@ -4,6 +4,7 @@ const sequelize = require('../db-client');
 const book = require('./book.model');
 const map = require('./map.model');
 const borrow = require('./borrow.model');
+const report = require('./report.model');
 
 class Item extends Sequelize.Model {
 
@@ -71,8 +72,12 @@ const item = Item.init({
         , validate: {
             notEmpty: true
         }
-    },
-    itemType: {
+    }
+    , column: {
+        type: Sequelize.STRING(10)
+        , allowNull: true
+    }
+    ,itemType: {
         type: Sequelize.ENUM
         , values: [
             'Book'
@@ -130,6 +135,20 @@ borrow.belongsTo(item, {
     , onUpdate: 'CASCADE' 
     , onDelete: 'CASCADE'
 });
+
+item.hasOne(report, {
+    foreignKey: 'itemId'
+    , onUpdate: 'CASCADE' 
+    , onDelete: 'CASCADE'
+});
+
+report.belongsTo(item, {
+    foreignKey: 'itemId'
+    , onUpdate: 'CASCADE' 
+    , onDelete: 'CASCADE'
+});
+
+
 
 module.exports = item;
 
