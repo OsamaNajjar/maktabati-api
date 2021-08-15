@@ -1,4 +1,5 @@
 const reportsManager = require('../managers/reports.manager');
+const modelMapper = require('../models/model-mapper');
 
 exports.getAllReports = async (req, res, next) => {
 
@@ -8,7 +9,7 @@ exports.getAllReports = async (req, res, next) => {
 
         const results = await reportsManager.getAllReports(names, author, reportId, reportType, fromYear, toYear);
 
-        return res.json(results);
+        return res.json(results.map(report => modelMapper.mapToReportDTO(report.toJSON())));
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -31,7 +32,7 @@ exports.getReportByReportId = async (req, res, next) => {
             throw error;
         }
 
-        return res.json(result);
+        return res.json(modelMapper.mapToReportDTO(result.toJSON()));
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -46,9 +47,15 @@ exports.createReport = async (req, res, next) => {
 
         const reportDTO = req.body;
 
+        if(!reportDTO) {
+            const error = new Error('Report required!');
+            error.httpSatutsCode = 401;
+            throw error;
+        }
+
         const result = await reportsManager.createReport(reportDTO);
 
-        return res.status(201).json(result);
+        return res.status(201).json(modelMapper.mapToReportDTO(result.toJSON()));
           
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

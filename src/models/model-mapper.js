@@ -24,7 +24,7 @@ exports.mapToBookDTO = (bookModel) => {
 
 exports.mapToBookModel = (bookDTO) => {
  
-    const bookModel = { ...bookDTO , Book: { isbn: bookDTO.isbn } };
+    const bookModel = { ...bookDTO,itemType: 'Book'  , Book: { isbn: bookDTO.isbn } };
     delete bookModel.isbn;
 
     return bookModel;

@@ -1,4 +1,5 @@
 const booksManager = require('../managers/books.manager');
+const modelMapper = require('../models/model-mapper');
 
 exports.getAllBooks = async (req, res, next) => {
 
@@ -8,7 +9,7 @@ exports.getAllBooks = async (req, res, next) => {
 
         const results = await booksManager.getAllBooks(names, author, isbn, fromYear, toYear);
 
-        return res.json(results);
+        return res.json(results.map(book => modelMapper.mapToBookDTO(book.toJSON())));
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -31,7 +32,7 @@ exports.getBookByISBN = async (req, res, next) => {
             throw error;
         }
 
-        return res.json(result);
+        return res.json(modelMapper.mapToBookDTO(result.toJSON()));
 
     } catch (error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -40,15 +41,28 @@ exports.getBookByISBN = async (req, res, next) => {
 
 };
 
+const validateBook = (bookDTO) => {
+
+    let validationMessage = '';
+
+
+}
+
 exports.createBook = async (req, res, next) => {
 
     try {
 
         const bookDTO = req.body;
 
+        if(!bookDTO) {
+            const error = new Error('Book required!');
+            error.httpSatutsCode = 401;
+            throw error;
+        }
+
         const result = await booksManager.createBook(bookDTO);
 
-        return res.status(201).json(result);
+        return res.status(201).json(modelMapper.mapToBookDTO(result.toJSON()));
           
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
@@ -57,17 +71,32 @@ exports.createBook = async (req, res, next) => {
 
 }
 
-exports.updateBook = (req, res, next) => {
+exports.updateBook = async (req, res, next) => {
 
     try {
+
+        const bookDTO = req.body;
+
+        if(!bookDTO) {
+            const error = new Error('Book required!');
+            error.httpSatutsCode = 401;
+            throw error;
+        }
+
+        const result = await booksManager.updateBook(bookDTO);
+
+        if(!result) {
+            const error = new Error();
+            error.httpStatusCode = 404;
+            throw error;
+        }
+
+        return res.status(200).json(result);
 
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
         return next(error);
     }
-
-     res.json({result: "updated"});
-
 };
 
 exports.deleteBook = (req, res, next) => {

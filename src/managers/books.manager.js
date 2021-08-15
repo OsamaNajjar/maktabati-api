@@ -36,7 +36,7 @@ exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
             }
         });
 
-        return items.map(book => modelMapper.mapToBookDTO(book.toJSON()));
+        return items;
 
     } catch(error) {
         throw error;
@@ -61,7 +61,7 @@ exports.getBookByISBN = async (isbn) => {
             return undefined;
         }
 
-        return modelMapper.mapToBookDTO(bookItem.toJSON());
+        return bookItem;
 
     } catch(error) {
         throw error;
@@ -75,7 +75,6 @@ exports.createBook = async (bookDTO) => {
         
         if(!bookDTO) {
             const error = new Error('Book required!');
-            error.httpSatutsCode = 401;
             throw error;
         }
 
@@ -85,9 +84,30 @@ exports.createBook = async (bookDTO) => {
             include: [Book] 
         });
 
-        return modelMapper.mapToBookDTO(result.toJSON());
+        return result;
 
     } catch(error) {
         throw error;
     }
+}
+
+exports.updateBook = async (bookDTO) => {
+
+    if(!bookDTO) {
+        const error = new Error('Book required!');
+        throw error;
+    }
+
+    const currentBook = await this.getBookByISBN(bookDTO.isbn);
+
+    if(!currentBook) {
+        return undefined;
+    }
+
+    const bookModel = modelMapper.mapToBookModel(bookDTO);
+
+    Item.update({},{
+
+    });
+
 }

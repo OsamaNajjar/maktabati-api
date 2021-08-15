@@ -38,7 +38,7 @@ exports.getAllReports = async (names, author, reportId,  reportType, fromYear, t
             }
         });
 
-        return items.map(report => modelMapper.mapToReportDTO(report.toJSON()));
+        return items;
 
     } catch(error) {
         throw error;
@@ -63,7 +63,7 @@ exports.getReportByReportId = async (reportId) => {
             return undefined;
         }
 
-        return modelMapper.mapToReportDTO(reportItem.toJSON());
+        return reportItem;
 
     } catch(error) {
         throw error;
@@ -86,8 +86,8 @@ exports.createReport = async (reportDTO) => {
         const result = await Item.create(reportModel, {
             include: [Report] 
         });
-
-        return modelMapper.mapToReportDTO(result.toJSON());
+        
+        return result;
 
     } catch(error) {
         throw error;

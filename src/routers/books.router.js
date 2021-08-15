@@ -7,19 +7,42 @@ const { check, query, body , param} = require('express-validator');
 
 const Router = express.Router();
 
+const checkBook = (req, res, next) => {
+
+}
+
 Router.get('/'
     , queryMiddleware.split(['names'], ',')
     , query('year', 'Invalid book year!')
         .optional({checkFalsy: true})
-        .isInt({min: 2000, max: new Date().getFullYear()})
+        .isInt({min: 1990, max: new Date().getFullYear()})
     , checkValidationResults
     , booksController.getAllBooks);
 
 Router.get('/:isbn', booksController.getBookByISBN);
 
-Router.post('/', authMiddleware, booksController.createBook);
+const bookValidations = [
+    body('name')
+        .notEmpty()
+    , body('year', 'Invalid year')
+        .isInt({min: 1990, max: new Date().getFullYear()})
+    , body('author')
+        .notEmpty()
+    , body('price', 'Invalid Price')
+        .isDecimal({min: 0})
+]
 
-Router.put('/:name', authMiddleware, booksController.updateBook);
+Router.post('/'
+    , bookValidations
+    , checkValidationResults
+    , authMiddleware
+    , booksController.createBook);
+
+Router.put('/:name'
+    , bookValidations
+    , checkValidationResults
+    , authMiddleware
+    , booksController.updateBook);
 
 Router.delete('/:name', authMiddleware, booksController.deleteBook);
 
