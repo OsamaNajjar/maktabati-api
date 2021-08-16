@@ -91,11 +91,11 @@ exports.mapToMapDTO = (mapModel) => {
       , 'itemType'
       , 'updatedAt'
       , 'createdAt'
-    ].forEach(key => delete reportDTO[key]);
+    ].forEach(key => delete mapDTO[key]);
 
-    reportDTO.key = reportDTO.name + reportDTO.year;
+    mapDTO.key = mapDTO.name + mapDTO.year;
 
-    return reportDTO;
+    return mapDTO;
 }
 
 exports.mapToMapModel = (mapDTO) => {

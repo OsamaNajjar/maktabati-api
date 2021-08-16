@@ -12,7 +12,8 @@ require('./database/models/Item.model');
 
 //Routers
 const booksRouter = require('./routers/books.router');
-const ReportsRouter = require('./routers/reports.router');
+const reportsRouter = require('./routers/reports.router');
+const mapsRouter = require('./routers/maps.router');
 
 
 const errorsController = require('./controllers/errors.controller');
@@ -30,7 +31,8 @@ app.use((req, res, next) => {
 // app.use(authMiddleware);
 
 app.use('/books' ,booksRouter);
-app.use('/reports' ,ReportsRouter);
+app.use('/reports' ,reportsRouter);
+app.use('/maps' ,mapsRouter);
 
 app.use('/500', errorsController.get500);
 app.use(errorsController.get404);

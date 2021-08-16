@@ -5,7 +5,7 @@ const Map = require('../database/models/map.model');
 const modelMapper = require('../models/model-mapper');
 
 
-exports.getAllMaps = async (names, author, size, reportId,  reportType, fromYear, toYear ) => {
+exports.getAllMaps = async (names, author, size, mapId,  mapType, fromYear, toYear ) => {
 
     try {
 
@@ -21,11 +21,11 @@ exports.getAllMaps = async (names, author, size, reportId,  reportType, fromYear
         if(size) {
             whereClause['size'] = {[Op.substring]: size};
         }
-        if(reportId) {
-            whereClause['$Map.reportId$'] = {[Op.substring]: reportId};
+        if(mapId) {
+            whereClause['$Map.mapId$'] = {[Op.substring]: mapId};
         }
-        if(reportType) {
-            whereClause['$Map.reportType$'] = {[Op.substring]: reportType};
+        if(mapType) {
+            whereClause['$Map.mapType$'] = {[Op.substring]: mapType};
         }
         if(fromYear) {
             whereClause['year'] = {[Op.gte]: fromYear};

@@ -51,7 +51,7 @@ exports.createMap = async (req, res, next) => {
             throw error;
         }
 
-        const result = await reportsManager.createMap(mapDTO);
+        const result = await mapsManager.createMap(mapDTO);
 
         return res.status(201).json(modelMapper.mapToMapDTO(result.toJSON()));
           
