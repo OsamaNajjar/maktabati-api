@@ -1,8 +1,9 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 
 const Item = require('../database/models/Item.model');
 const Book = require('../database/models/book.model');
 const modelMapper = require('../models/model-mapper');
+const sequelize = require('../database/db-client');
 
 
 exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
@@ -11,6 +12,8 @@ exports.getAllBooks = async (names, author, isbn, fromYear, toYear ) => {
 
         //Setup conditions
         let whereClause = {};
+
+        whereClause['itemType'] = 'Book';
 
         if(names && names.length > 0) {
             whereClause['name'] = names;
@@ -91,23 +94,39 @@ exports.createBook = async (bookDTO) => {
     }
 }
 
-exports.updateBook = async (bookDTO) => {
+exports.updateBook = async (isbn,bookModel) => {
 
-    if(!bookDTO) {
+    if(!bookModel) {
         const error = new Error('Book required!');
         throw error;
     }
 
-    const currentBook = await this.getBookByISBN(bookDTO.isbn);
+    try {
 
-    if(!currentBook) {
-        return undefined;
+        const currentBookItem = await this.getBookByISBN(isbn);
+
+        if(!currentBookItem) {
+            return undefined;
+        } 
+
+        await sequelize.transaction(async (t) => {
+
+            await Item.update({...bookModel}
+                , {where: {id: currentBookItem.id}
+                    , transaction: t});
+        
+            await currentBookItem.Book.update({
+                isbn: bookModel.Book.isbn
+            },  { transaction: t });
+        
+            return;
+        
+        });
+
+        return await this.getBookByISBN(bookModel.Book.isbn);
+
+    } catch(error) {
+        throw error;
     }
-
-    const bookModel = modelMapper.mapToBookModel(bookDTO);
-
-    Item.update({},{
-
-    });
 
 }

@@ -75,6 +75,7 @@ exports.updateBook = async (req, res, next) => {
 
     try {
 
+        const isbn = req.params.isbn;
         const bookDTO = req.body;
 
         if(!bookDTO) {
@@ -83,7 +84,9 @@ exports.updateBook = async (req, res, next) => {
             throw error;
         }
 
-        const result = await booksManager.updateBook(bookDTO);
+        const bookModel = modelMapper.mapToBookModel(bookDTO);
+
+        const result = await booksManager.updateBook(isbn,bookModel);
 
         if(!result) {
             const error = new Error();
@@ -91,7 +94,7 @@ exports.updateBook = async (req, res, next) => {
             throw error;
         }
 
-        return res.status(200).json(result);
+        return res.status(200).json(modelMapper.mapToBookDTO(result.toJSON()));
 
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

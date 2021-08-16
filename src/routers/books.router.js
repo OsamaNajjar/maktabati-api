@@ -38,7 +38,7 @@ Router.post('/'
     , authMiddleware
     , booksController.createBook);
 
-Router.put('/:name'
+Router.put('/:isbn'
     , bookValidations
     , checkValidationResults
     , authMiddleware
