@@ -11,6 +11,8 @@ exports.getAllReports = async (names, author, reportId,  reportType, fromYear, t
         //Setup conditions
         let whereClause = {};
 
+        whereClause['itemType'] = "Report";
+
         if(names && names.length > 0) {
             whereClause['name'] = names;
         }

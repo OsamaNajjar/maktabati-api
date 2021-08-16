@@ -12,6 +12,8 @@ exports.getAllMaps = async (names, author, size, mapId,  mapType, fromYear, toYe
         //Setup conditions
         let whereClause = {};
 
+        whereClause['itemType'] = "Map";
+
         if(names && names.length > 0) {
             whereClause['name'] = names;
         }
