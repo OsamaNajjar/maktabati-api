@@ -1,8 +1,10 @@
 const BookDTO = require('./book.dto');
 const ReportDTO = require('./report.dto');
+const MapDTO = require('./map.dto');
 
 const BookModel = require('../database/models/book.model');
 const ReportModel = require('../database/models/report.model');
+const MapModel = require('../database/models/map.model');
 
 //Books
 exports.mapToBookDTO = (bookModel) => {
@@ -55,7 +57,7 @@ exports.mapToReportDTO = (reportModel) => {
 
 exports.mapToReportModel = (reportDTO) => {
  
-    const reportModel = { ...reportDTO , Report: { reportId: reportDTO.reportId 
+    const reportModel = { ...reportDTO, itemType: 'Report' , Report: { reportId: reportDTO.reportId 
         ,reportType: reportDTO.reportType
         ,region: reportDTO.region
         ,attachments: reportDTO.attachments
@@ -70,4 +72,49 @@ exports.mapToReportModel = (reportDTO) => {
     delete reportModel.status;
 
     return reportModel;
+}
+
+//Maps
+exports.mapToMapDTO = (mapModel) => {
+
+    const mapDTO = {...mapModel, mapId: mapModel.Map.mapId
+        ,mapType: mapModel.Map.mapType
+        ,size: mapModel.Map.size
+        ,region: mapModel.Map.region
+        ,attachments: mapModel.Map.attachments
+        ,abstract: mapModel.Map.abstract
+        ,status: mapModel.Map.status};
+
+    [
+        'id'
+      , 'Map'
+      , 'itemType'
+      , 'updatedAt'
+      , 'createdAt'
+    ].forEach(key => delete reportDTO[key]);
+
+    reportDTO.key = reportDTO.name + reportDTO.year;
+
+    return reportDTO;
+}
+
+exports.mapToMapModel = (mapDTO) => {
+ 
+    const mapModel = { ...mapDTO, itemType: 'Map' , Map: { mapId: mapDTO.mapId 
+        ,mapType: mapDTO.mapType
+        ,size: mapDTO.size
+        ,region: mapDTO.region
+        ,attachments: mapDTO.attachments
+        ,abstract: mapDTO.abstract
+        ,status: mapDTO.status} };
+        
+    delete mapModel.mapId;
+    delete mapModel.mapType;
+    delete mapModel.size;
+    delete mapModel.region;
+    delete mapModel.attachments;
+    delete mapModel.abstract;
+    delete mapModel.status;
+
+    return mapModel;
 }
