@@ -102,6 +102,23 @@ exports.updateBook = async (req, res, next) => {
     }
 };
 
-exports.deleteBook = (req, res, next) => {
+exports.deleteBook = async (req, res, next) => {
+    try {
+        console.log("Hi");
+        const isbn = req.params.isbn;
+        
+        const result = await booksManager.deleteBook(isbn);
 
+        if(!result) {
+            const error = new Error();
+            error.httpStatusCode = 404;
+            throw error;
+        }
+
+        return res.status(200).json(result.toJSON());
+
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
 };

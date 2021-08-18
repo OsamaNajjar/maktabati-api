@@ -130,3 +130,35 @@ exports.updateBook = async (isbn,bookModel) => {
     }
 
 }
+
+exports.deleteBook = async (isbn) => {
+
+    try {
+
+        const BookItem = await this.getBookByISBN(isbn);
+
+        if(!BookItem) {
+            return undefined;
+        } 
+
+        await sequelize.transaction(async (t) => {
+
+            await BookItem.Book.destroy({
+                            isbn: isbn
+                        },  { transaction: t });
+
+            await Item.destroy(
+                {where: {id: BookItem.id}
+                    , transaction: t});
+        
+            return;
+            
+        });
+
+        return;
+
+    } catch(error) {
+        throw error;
+    }
+
+}

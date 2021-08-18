@@ -44,6 +44,6 @@ Router.put('/:isbn'
     , authMiddleware
     , booksController.updateBook);
 
-Router.delete('/:name', authMiddleware, booksController.deleteBook);
+Router.delete('/:isbn', authMiddleware, booksController.deleteBook);
 
 module.exports = Router;

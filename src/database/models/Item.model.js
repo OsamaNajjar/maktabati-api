@@ -18,7 +18,7 @@ const item = Item.init({
         , primaryKey: true
     }
     , name: {
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(300)
         , allowNull: false
         // , unique: 'uniqueName'
         , validate: {
@@ -26,14 +26,14 @@ const item = Item.init({
         }
     }
     , nameEng: {
-        type: Sequelize.STRING(200)
+        type: Sequelize.STRING(300)
     }
     , year: {
         type: Sequelize.INTEGER
         , allowNull: false
         // , unique: 'uniqueName'
         , validate: {
-            min: { args: 1960 , msg: 'Book year can not be before 1960'}
+            min: { args: 1900 , msg: 'year can not be before 1900'}
         }
     }
     , author: {

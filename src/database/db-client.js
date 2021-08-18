@@ -10,7 +10,8 @@ const sequelize = new Sequelize(
       , dialectOptions: {
           options: { 
               instanceName: process.env.DB_INSTANCE_NAME,
-              trustServerCertificate: true
+              trustServerCertificate: true,
+              encrypt:false
           }
       }
       , timezone: '+03:00'
