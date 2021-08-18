@@ -104,8 +104,11 @@ exports.updateBook = async (req, res, next) => {
 
 exports.deleteBook = async (req, res, next) => {
     try {
-        console.log("Hi");
+
         const isbn = req.params.isbn;
+
+        //Check if item exist.
+        //Check for any borrows
         
         const result = await booksManager.deleteBook(isbn);
 
@@ -115,7 +118,7 @@ exports.deleteBook = async (req, res, next) => {
             throw error;
         }
 
-        return res.status(200).json(result.toJSON());
+        return res.status(200).json();
 
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

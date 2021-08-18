@@ -155,7 +155,7 @@ exports.deleteBook = async (isbn) => {
             
         });
 
-        return;
+        return true;
 
     } catch(error) {
         throw error;
