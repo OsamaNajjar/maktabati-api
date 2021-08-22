@@ -1,9 +1,9 @@
 module.exports = class ReportDTO {
 
-    constructor(id, name, nameEn, author, reportId, reportType, region, year, price, quantity, attachments, abstract, note, row, shelf, column, status) {
+    constructor(id, name, nameAr, author, reportId, reportType, region, year, price, quantity, attachments, abstract, note, row, shelf, column, status) {
         this.id = id;
         this.name = name;
-        this.nameEn = nameEn;
+        this.nameAr = nameAr;
         this.author = author;
         this.reportId  = reportId;
         this.reportType = reportType;

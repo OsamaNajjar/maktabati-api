@@ -4,14 +4,14 @@ const Item = require('../database/models/Item.model');
 const Report = require('../database/models/report.model');
 const modelMapper = require('../models/model-mapper');
 
-exports.getAllReports = async (names, author, reportId,  reportType, fromYear, toYear ) => {
+exports.getAllReports = async (names, author, reportId, reportType, abstract, fromYear, toYear ) => {
 
     try {
 
         //Setup conditions
         let whereClause = {};
 
-        whereClause['itemType'] = "Report";
+        whereClause['itemType'] = 'Report';
 
         if(names && names.length > 0) {
             whereClause['name'] = names;
@@ -24,6 +24,9 @@ exports.getAllReports = async (names, author, reportId,  reportType, fromYear, t
         }
         if(reportType) {
             whereClause['$Report.reportType$'] = {[Op.substring]: reportType};
+        }
+        if(abstract) {
+            whereClause['abstract'] = {[Op.substring]: abstract};
         }
         if(fromYear) {
             whereClause['year'] = {[Op.gte]: fromYear};
@@ -79,7 +82,6 @@ exports.createReport = async (reportDTO) => {
         
         if(!reportDTO) {
             const error = new Error('Report required!');
-            error.httpSatutsCode = 401;
             throw error;
         }
 
@@ -94,4 +96,73 @@ exports.createReport = async (reportDTO) => {
     } catch(error) {
         throw error;
     }
+}
+
+exports.updateReport = async (reportId,reportModel) => {
+
+    if(!reportModel) {
+        const error = new Error('Report required!');
+        throw error;
+    }
+
+    try {
+
+        const currentReportItem = await this.getReportByReportId(reportId);
+
+        if(!currentReportItem) {
+            return undefined;
+        } 
+
+        await sequelize.transaction(async (t) => {
+
+            await Item.update({...reportModel}
+                , {where: {id: currentReportItem.id}
+                    , transaction: t});
+        
+            await currentReportItem.Report.update({
+                reportId: reportModel.Report.reportId
+            },  { transaction: t });
+        
+            return;
+        
+        });
+
+        return await this.getReportByReportId(reportModel.Report.reportId);
+
+    } catch(error) {
+        throw error;
+    }
+
+}
+
+exports.deleteReport = async (reportId) => {
+
+    try {
+
+        const ReportItem = await this.getReportByReportId(reportId);
+
+        if(!ReportItem) {
+            return undefined;
+        } 
+
+        await sequelize.transaction(async (t) => {
+
+            await ReportItem.Report.destroy({
+                             reportId: reportId
+                        },  { transaction: t });
+
+            await Item.destroy(
+                {where: {id: ReportItem.id}
+                    , transaction: t});
+        
+            return;
+            
+        });
+
+        return true;
+
+    } catch(error) {
+        throw error;
+    }
+
 }

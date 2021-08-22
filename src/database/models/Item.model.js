@@ -25,7 +25,7 @@ const item = Item.init({
             notEmpty: true
         }
     }
-    , nameEng: {
+    , nameAr: {
         type: Sequelize.STRING(300)
     }
     , year: {
