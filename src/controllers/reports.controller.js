@@ -5,9 +5,9 @@ exports.getAllReports = async (req, res, next) => {
 
     try {
 
-        const { names , author, reportId, reportType, fromYear, toYear} = req.query;
+        const { names , author, reportId, reportType, abstract, fromYear, toYear} = req.query;
 
-        const results = await reportsManager.getAllReports(names, author, reportId, reportType, fromYear, toYear);
+        const results = await reportsManager.getAllReports(names, author, reportId, reportType, abstract, fromYear, toYear);
 
         return res.json(results.map(report => modelMapper.mapToReportDTO(report.toJSON())));
 
@@ -63,3 +63,58 @@ exports.createReport = async (req, res, next) => {
     }
 
 }
+
+exports.updateReport = async (req, res, next) => {
+
+    try {
+
+        const reportId = req.params.reportId;
+        const reportDTO = req.body;
+
+        if(!reportDTO) {
+            const error = new Error('Report required!');
+            error.httpSatutsCode = 401;
+            throw error;
+        }
+
+        const reportModel = modelMapper.mapToReportModel(reportDTO);
+
+        const result = await reportsManager.updateReport(reportId,reportModel);
+
+        if(!result) {
+            const error = new Error();
+            error.httpStatusCode = 404;
+            throw error;
+        }
+
+        return res.status(200).json(modelMapper.mapToReportDTO(result.toJSON()));
+
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
+};
+
+exports.deleteReport = async (req, res, next) => {
+    try {
+
+        const reportId = req.params.reportId;
+
+        //Check if item exist.
+        //Check for any borrows
+        
+        const result = await reportsManager.deleteReport(reportId);
+
+        if(!result) {
+            const error = new Error();
+            error.httpStatusCode = 404;
+            throw error;
+        }
+
+        return res.status(200).json();
+
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
+};

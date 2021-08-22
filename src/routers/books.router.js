@@ -14,8 +14,8 @@ const checkBook = (req, res, next) => {
 Router.get('/'
     , queryMiddleware.split(['names'], ',')
     , query('year', 'Invalid book year!')
-        .optional({checkFalsy: true})
-        .isInt({min: 1990, max: new Date().getFullYear()})
+        .optional({checkFalsy: true})           
+        .isInt({min: 1900, max: new Date().getFullYear()})
     , checkValidationResults
     , booksController.getAllBooks);
 
@@ -25,11 +25,17 @@ const bookValidations = [
     body('name')
         .notEmpty()
     , body('year', 'Invalid year')
-        .isInt({min: 1990, max: new Date().getFullYear()})
+        .isInt({min: 1900, max: new Date().getFullYear()})
     , body('author')
         .notEmpty()
     , body('price', 'Invalid Price')
         .isDecimal({min: 0})
+    , body('quantity', 'Invalid quantity')
+        .isInt({min: 0})
+    , body('row')
+        .notEmpty()
+    , body('shelf')
+        .notEmpty()
 ]
 
 Router.post('/'
