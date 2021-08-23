@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require('sequelize');
 
-const Item = require('../database/models/Item.model');
+const Item = require('../database/models/item.model');
 const Book = require('../database/models/book.model');
 const modelMapper = require('../models/model-mapper');
 const sequelize = require('../database/db-client');

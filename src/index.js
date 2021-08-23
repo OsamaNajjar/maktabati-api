@@ -8,7 +8,7 @@ const authMiddleware = require('./middlewares/auth.middleware');
 
 //database
 const sequelize = require('./database/db-client');
-require('./database/models/Item.model');
+require('./database/models/item.model');
 
 //Routers
 const booksRouter = require('./routers/books.router');

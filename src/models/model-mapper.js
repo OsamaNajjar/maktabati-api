@@ -1,6 +1,7 @@
 const BookDTO = require('./book.dto');
 const ReportDTO = require('./report.dto');
 const MapDTO = require('./map.dto');
+const UserDTO = require('./user.dto');
 
 const BookModel = require('../database/models/book.model');
 const ReportModel = require('../database/models/report.model');
@@ -117,4 +118,25 @@ exports.mapToMapModel = (mapDTO) => {
     delete mapModel.status;
 
     return mapModel;
+}
+
+//Users
+exports.mapToUserDTO = (userModel) => {
+    const userDTO = {...userModel };
+
+    [
+        'id'
+      , 'password'
+      , 'createdAt'
+      , 'updatedAt'
+    ].forEach(key => delete userDTO[key]);
+
+    return userDTO;
+}
+
+exports.mapToUserModel = (userDTO) => {
+ 
+    const userModel = { ...userDTO };
+
+    return userModel;
 }
