@@ -31,3 +31,86 @@ exports.getAllUsers = async ({employeeId, email, name}) => {
     }
 
 }
+
+exports.getUserByEmail = async (email) => {
+
+    try {
+
+        const currentUser = await Item.findOne({email: email});
+
+        if(!currentUser) {
+            return undefined;
+        }
+
+        return currentUser;
+
+    } catch(error) {
+        throw error;
+    }
+
+}
+
+exports.createUser = async (userModel) => {
+
+    try {
+        
+        if(!userModel) {
+            const error = new Error('User required!');
+            throw error;
+        }
+
+        const result = await User.create(userModel);
+
+        return result;
+
+    } catch(error) {
+        throw error;
+    }
+
+}
+
+exports.updateUser = async (email,userModel) => {
+
+    if(!userModel) {
+        const error = new Error('User required!');
+        throw error;
+    }
+
+    try {
+
+        const currentUser = await this.getUserByEmail({email = email});
+
+        if(!currentUser) {
+            return undefined;
+        } 
+
+       const result = await User.update(userModel
+            , {where: {id: currentUser.id}});
+
+        return result;
+
+    } catch(error) {
+        throw error;
+    }
+
+}
+
+exports.deleteUser = async (email) => {
+
+    try {
+
+        const currentUser = await this.getUserByEmail(email);
+
+        if(!currentUser) {
+            return undefined;
+        } 
+
+        await currentUser.destroy({email: email});
+
+        return true;
+
+    } catch(error) {
+        throw error;
+    }
+
+}

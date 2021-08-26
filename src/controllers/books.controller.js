@@ -60,7 +60,9 @@ exports.createBook = async (req, res, next) => {
             throw error;
         }
 
-        const result = await booksManager.createBook(bookDTO);
+        const bookModel = modelMapper.mapToBookModel(bookDTO);
+
+        const result = await booksManager.createBook(bookModel);
 
         return res.status(201).json(modelMapper.mapToBookDTO(result.toJSON()));
           

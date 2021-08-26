@@ -2,7 +2,6 @@ const { Op, Sequelize } = require('sequelize');
 
 const Item = require('../database/models/item.model');
 const Book = require('../database/models/book.model');
-const modelMapper = require('../models/model-mapper');
 const sequelize = require('../database/db-client');
 
 
@@ -72,16 +71,14 @@ exports.getBookByISBN = async (isbn) => {
 
 }
 
-exports.createBook = async (bookDTO) => {
+exports.createBook = async (bookModel) => {
 
     try {
         
-        if(!bookDTO) {
+        if(!bookModel) {
             const error = new Error('Book required!');
             throw error;
         }
-
-        const bookModel = modelMapper.mapToBookModel(bookDTO);
 
         const result = await Item.create(bookModel, {
             include: [Book] 
