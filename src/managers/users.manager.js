@@ -17,7 +17,7 @@ exports.getAllUsers = async ({employeeId, email, name}) => {
         if(email) {
             whereClause['email'] = {[Op.substring]: email};
         }
-        if(author) {
+        if(name) {
             whereClause['name'] = {[Op.substring]: name};
         }
 
@@ -78,7 +78,7 @@ exports.updateUser = async (email,userModel) => {
 
     try {
 
-        const currentUser = await this.getUserByEmail({email = email});
+        const currentUser = await this.getUserByEmail({email: email});
 
         if(!currentUser) {
             return undefined;

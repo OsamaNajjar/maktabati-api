@@ -7,7 +7,7 @@ exports.getAllUsers = async (req, res, next) => {
 
         const { employeeId , email, name} = req.query;
 
-        const results = await usersManager.getAllUsers(employeeId, email, name);
+        const results = await usersManager.getAllUsers({employeeId, email, name});
 
         return res.json(results.map(user => modelMapper.mapToUserDTO(user.toJSON())));
 

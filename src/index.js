@@ -9,11 +9,13 @@ const authMiddleware = require('./middlewares/auth.middleware');
 //database
 const sequelize = require('./database/db-client');
 require('./database/models/item.model');
+require('./database/models/user.model');
 
 //Routers
 const booksRouter = require('./routers/books.router');
 const reportsRouter = require('./routers/reports.router');
 const mapsRouter = require('./routers/maps.router');
+const usersRouter = require('./routers/users.router');
 
 
 const errorsController = require('./controllers/errors.controller');
@@ -33,6 +35,7 @@ app.use((req, res, next) => {
 app.use('/books' ,booksRouter);
 app.use('/reports' ,reportsRouter);
 app.use('/maps' ,mapsRouter);
+app.use('/users', usersRouter);
 
 app.use('/500', errorsController.get500);
 app.use(errorsController.get404);
