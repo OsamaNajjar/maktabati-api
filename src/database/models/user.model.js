@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db-client');
+const bcrypt = require('bcryptjs');
 
 class User extends Sequelize.Model {
 
@@ -36,10 +37,10 @@ module.exports = User.init({
             , isEmail: true
         }
     }
-    // , hashedPassword: {
-    //   type: DataTypes.STRING(64),
-    //   is: /^[0-9a-f]{64}$/i
-    // }
+    , hashedPassword: {
+      type: Sequelize.STRING(64),
+      is: /^[0-9a-f]{64}$/i
+    }
     , password: {
         type: Sequelize.STRING
         , allowNull: false
@@ -48,3 +49,15 @@ module.exports = User.init({
     sequelize
     , timestamps: true
 });
+
+User.beforeSave(async (user, options) => {
+
+    // if(user.changed('password')){
+    //     console.log('Password changed');
+    // }
+
+    // const hashedPassword = await bcrypt.hash(user.password, 8);
+    // user.hashedPassword = hashedPassword;
+
+    console.log('hook user');
+  });

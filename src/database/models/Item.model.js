@@ -99,7 +99,6 @@ const item = Item.init({
     , indexes: [{unique: true, fields: ['name', 'year']}]
 });
 
-
 item.hasOne(book, {
     foreignKey: 'itemId'
     , onUpdate: 'CASCADE' 

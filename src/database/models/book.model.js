@@ -29,4 +29,5 @@ module.exports = Book.init({
 }, {
     sequelize,
     updatedAt: false
-})
+});
+

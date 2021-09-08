@@ -32,11 +32,11 @@ exports.getAllUsers = async ({employeeId, email, name}) => {
 
 }
 
-exports.getUserByEmail = async (email) => {
+exports.getByEmployeeId = async (employeeId) => {
 
     try {
 
-        const currentUser = await Item.findOne({email: email});
+        const currentUser = await User.findOne({employeeId: employeeId});
 
         if(!currentUser) {
             return undefined;
@@ -69,23 +69,38 @@ exports.createUser = async (userModel) => {
 
 }
 
-exports.updateUser = async (email,userModel) => {
-
-    if(!userModel) {
-        const error = new Error('User required!');
-        throw error;
-    }
+exports.updateUser = async (employeeId,userModel) => {
 
     try {
 
-        const currentUser = await this.getUserByEmail({email: email});
+        if(!userModel) {
+            const error = new Error('User required!');
+            throw error;
+        }
+
+        const updates = Object.keys(userModel);
+        const allowedUpdates = ['name', 'email', 'password'];
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+        if(!isValidOperation) {
+            const error = new Error('Change not allowed');
+            throw error;
+        }
+
+        const currentUser = await this.getByEmployeeId({employeeId: employeeId});
 
         if(!currentUser) {
             return undefined;
-        } 
+        }
 
-       const result = await User.update(userModel
-            , {where: {id: currentUser.id}});
+        updates.forEach(update => currentUser[update] = userModel[update]);
+
+        const result = await currentUser.save();
+
+        console.log(result);
+
+    //    const result = await User.update(userModel
+    //         , {where: {id: currentUser.id}});
 
         return result;
 

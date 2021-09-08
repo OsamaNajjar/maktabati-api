@@ -5,7 +5,7 @@ exports.getAllUsers = async (req, res, next) => {
 
     try {
 
-        const { employeeId , email, name} = req.query;
+        const { employeeId , email, name, lang} = req.query;
 
         const results = await usersManager.getAllUsers({employeeId, email, name});
 
@@ -18,12 +18,13 @@ exports.getAllUsers = async (req, res, next) => {
 
 }
 
-exports.getUserByEmail = async (req, res, next) => {
+exports.getByEmployeeId = async (req, res, next) => {
 
     try {
-        const email = req.params.email;
+        const employeeId = req.params.employeeId;
+        const {lang} = req.query;
 
-        const result = await usersManager.getUserByEmail(email);
+        const result = await usersManager.getByEmployeeId(employeeId);
 
         if(!result) {
             const error = new Error();
@@ -44,6 +45,7 @@ exports.createUser = async (req, res, next) => {
     try {
 
         const userDTO = req.body;
+        const {lang} = req.query;
 
         if(!userDTO) {
             const error = new Error('User required!');
@@ -57,6 +59,35 @@ exports.createUser = async (req, res, next) => {
 
         return res.status(201).json(modelMapper.mapToUserDTO(result.toJSON()));
 
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
+}
+
+exports.updateUser = async (req, res, next) => {
+
+    try {
+
+        const employeeId = req.params.employeeId;
+        const {lang} = req.query;
+
+        const updates = Object.keys(req.body);
+        const allowedUpdates = ['name', 'email', 'password'];
+        const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+        if(!isValidOperation) {
+            const error = new Error();
+            error.httpStatusCode = 401;
+            throw error;
+        }
+
+        // const results = await usersManager.updateUser()
+
+        const user = await usersManager.getByEmployeeId(employeeId);
+        updates.forEach(update => user[update] = req.body[update]);
+
+        
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
         return next(error);
