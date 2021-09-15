@@ -69,7 +69,7 @@ exports.createUser = async (userModel) => {
 
 }
 
-exports.updateUser = async (employeeId,userModel) => {
+exports.updateUser = async (employeeId, userModel) => {
 
     try {
 
@@ -97,7 +97,7 @@ exports.updateUser = async (employeeId,userModel) => {
 
         const result = await currentUser.save();
 
-        console.log(result);
+        // console.log(result);
 
     //    const result = await User.update(userModel
     //         , {where: {id: currentUser.id}});

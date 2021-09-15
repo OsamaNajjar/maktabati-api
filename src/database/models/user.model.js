@@ -51,13 +51,8 @@ module.exports = User.init({
 });
 
 User.beforeSave(async (user, options) => {
-
-    // if(user.changed('password')){
-    //     console.log('Password changed');
-    // }
-
-    // const hashedPassword = await bcrypt.hash(user.password, 8);
-    // user.hashedPassword = hashedPassword;
-
-    console.log('hook user');
-  });
+    if(user.changed('password')){
+        const hashedPassword = await bcrypt.hash(user.password, 8);
+        user.hashedPassword = hashedPassword;
+    }
+});

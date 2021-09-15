@@ -82,11 +82,9 @@ exports.updateUser = async (req, res, next) => {
             throw error;
         }
 
-        // const results = await usersManager.updateUser()
+        const result = await usersManager.updateUser(employeeId, req.body);
 
-        const user = await usersManager.getByEmployeeId(employeeId);
-        updates.forEach(update => user[update] = req.body[update]);
-
+        res.status(200).json(modelMapper.mapToUserDTO(result.toJSON()));
         
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
