@@ -65,6 +65,28 @@ exports.createUser = async (req, res, next) => {
     }
 }
 
+exports.loginUser = async (req, res, next) => {
+
+    try {
+
+        const { email, password } = req.body;
+
+        const user = await usersManager.findByCredentials(req.body.user, req.body.password);
+
+        if(!user) {
+            const error = new Error('User not found!');
+            error.httpSatutsCode = 404;
+            throw error;
+        }
+
+        return res.status(200).json();
+
+    } catch(error) {
+        error.httpStatusCode = error.httpStatusCode || 500;
+        return next(error);
+    }
+}
+
 exports.updateUser = async (req, res, next) => {
 
     try {
@@ -85,7 +107,7 @@ exports.updateUser = async (req, res, next) => {
         const result = await usersManager.updateUser(employeeId, req.body);
 
         res.status(200).json(modelMapper.mapToUserDTO(result.toJSON()));
-        
+
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;
         return next(error);
@@ -108,7 +130,7 @@ exports.deleteBook = async (req, res, next) => {
             throw error;
         }
 
-        return res.status(200).json();
+        return res.status(200).json(modelMapper.mapToUserDTO(result.toJSON()));
 
     } catch(error) {
         error.httpStatusCode = error.httpStatusCode || 500;

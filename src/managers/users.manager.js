@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const bcrypt = require('bcryptjs');
 
 const User = require('../database/models/user.model');
 const modelMapper = require('../models/model-mapper');
@@ -50,6 +51,23 @@ exports.getByEmployeeId = async (employeeId) => {
 
 }
 
+exports.getUserByEmail = async (email) => {
+
+    try {
+
+        const user = await User.findOne({email: email});
+
+        if(!user) {
+            return undefined;
+        }
+
+        return user;
+
+    } catch(error) {
+        throw error;
+    }
+}
+
 exports.createUser = async (userModel) => {
 
     try {
@@ -67,6 +85,26 @@ exports.createUser = async (userModel) => {
         throw error;
     }
 
+}
+
+exports.findByCredentials = async (email, password) => {
+    try {
+
+        const user = await this.getUserByEmail(email);
+
+        if(!user) {
+            throw new error('Unable to login!');
+        }
+
+        const isMatch = await bcrypt.compare(user.hashedPassword, password);
+        if(!isMatch) {
+            throw new error('Unable to login!');
+        }
+
+        return user;
+    } catch(error) {
+        throw error;
+    }
 }
 
 exports.updateUser = async (employeeId, userModel) => {

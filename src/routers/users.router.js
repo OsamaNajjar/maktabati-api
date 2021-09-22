@@ -1,6 +1,6 @@
 const express = require('express');
 const { checkSchema} = require('express-validator');
-const userSchema = require('../Validations/user.validation.schema');
+// const userSchema = require('../Validations/user.validation.schema');
 const {checkValidationResults} = require('../middlewares/utils.middleware');
 
 const usersController = require('../controllers/users.controller');
@@ -14,7 +14,11 @@ Router.get('/', usersController.getAllUsers);
 Router.get('/:employeeId', usersController.getByEmployeeId);
 
 // /users?{lang=A} => POST
-Router.post('/', checkSchema(userSchema), checkValidationResults ,usersController.createUser);
+Router.post('/' ,usersController.createUser);
+
+Router.post('/login', (req, res, next) => {
+    
+})
 
 Router.patch('/:employeeId', usersController.updateUser);
 

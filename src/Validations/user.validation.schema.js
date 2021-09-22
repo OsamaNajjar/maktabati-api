@@ -1,5 +1,3 @@
-var validator = require('validator');
-
 const userValidationSchema = {
     name: {
         notEmpty:true,

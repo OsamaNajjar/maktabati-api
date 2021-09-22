@@ -11,7 +11,8 @@ const sequelize = new Sequelize(
           options: { 
               instanceName: process.env.DB_INSTANCE_NAME,
               trustServerCertificate: true,
-              encrypt:false
+              encrypt:false,
+              enableArithAbort: true
           }
       }
       , timezone: '+03:00'

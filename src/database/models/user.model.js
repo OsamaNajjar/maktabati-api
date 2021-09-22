@@ -1,9 +1,14 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../db-client');
 const bcrypt = require('bcryptjs');
+const { create } = require('./book.model');
 
 class User extends Sequelize.Model {
 
+    static saveUser() {
+        console.log('ok');
+        return true;
+    }
 }
 
 module.exports = User.init({
