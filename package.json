@@ -8,7 +8,7 @@
     "start:dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "start:qlt": "env-cmd -f ./config/qlt.env node src/index.js"
   },
-  "author": "Osama Najjar",
+  "author": "Osama Najjar, Sameer Al Harbi",
   "license": "ISC",
   "devDependencies": {
     "env-cmd": "^10.1.0",
