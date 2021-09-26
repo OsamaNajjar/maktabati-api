@@ -19,6 +19,7 @@
     "chalk": "^4.1.2",
     "express": "^4.17.1",
     "express-validator": "^6.12.1",
+    "joi": "^17.4.2",
     "sequelize": "^6.6.5",
     "tedious": "^11.4.0"
   }
