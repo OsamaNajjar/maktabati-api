@@ -6,7 +6,8 @@
   "scripts": {
     "start": "env-cmd -f ./config/prod.env node src/index.js",
     "start:dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
-    "start:qlt": "env-cmd -f ./config/qlt.env node src/index.js"
+    "start:qlt": "env-cmd -f ./config/qlt.env node src/index.js",
+    "start:playground": "env-cmd -f ./config/dev.env node src/playground/test1.js"
   },
   "author": "Osama Najjar, Sameer Al Harbi",
   "license": "ISC",

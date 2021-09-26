@@ -5,7 +5,7 @@ const sequelize = new Sequelize(
   , process.env.DB_USER
   , process.env.DB_PASSWORD
   , {
-        host: process.env.DB_SERVER
+        host: process.env.DB_SERVER //'127.0.0.1'
       , dialect: process.env.DB_DIALECT
       , dialectOptions: {
           options: { 

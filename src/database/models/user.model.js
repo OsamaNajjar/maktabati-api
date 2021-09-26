@@ -42,13 +42,9 @@ module.exports = User.init({
             , isEmail: true
         }
     }
-    , hashedPassword: {
+    , password: {
       type: Sequelize.STRING(64),
       is: /^[0-9a-f]{64}$/i
-    }
-    , password: {
-        type: Sequelize.STRING
-        , allowNull: false
     }
 }, {
     sequelize
@@ -57,7 +53,7 @@ module.exports = User.init({
 
 User.beforeSave(async (user, options) => {
     if(user.changed('password')){
-        const hashedPassword = await bcrypt.hash(user.password, 8);
-        user.hashedPassword = hashedPassword;
+        console.log(user.password);
+        user.password = await bcrypt.hash(user.password, 8);
     }
 });

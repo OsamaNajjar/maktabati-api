@@ -71,7 +71,9 @@ exports.loginUser = async (req, res, next) => {
 
         const { email, password } = req.body;
 
-        const user = await usersManager.findByCredentials(req.body.user, req.body.password);
+        console.log(req.body)
+
+        const user = await usersManager.findByCredentials(email, password);
 
         if(!user) {
             const error = new Error('User not found!');

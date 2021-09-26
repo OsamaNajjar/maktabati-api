@@ -93,15 +93,16 @@ exports.findByCredentials = async (email, password) => {
         const user = await this.getUserByEmail(email);
 
         if(!user) {
-            throw new error('Unable to login!');
+            return undefined;
         }
 
-        const isMatch = await bcrypt.compare(user.hashedPassword, password);
+        const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch) {
-            throw new error('Unable to login!');
+            return undefined;
         }
 
         return user;
+
     } catch(error) {
         throw error;
     }

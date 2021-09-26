@@ -16,9 +16,7 @@ Router.get('/:employeeId', usersController.getByEmployeeId);
 // /users?{lang=A} => POST
 Router.post('/' ,usersController.createUser);
 
-Router.post('/login', (req, res, next) => {
-    
-})
+Router.post('/login', usersController.loginUser);
 
 Router.patch('/:employeeId', usersController.updateUser);
 
