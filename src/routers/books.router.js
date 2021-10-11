@@ -1,11 +1,11 @@
 const express = require('express');
 const booksController = require('../controllers/books.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
-const {checkValidationResults} = require('../middlewares/utils.middleware');
+const {checkValidationResults, checkSchema } = require('../middlewares/utils.middleware');
 const { queryMiddleware } = require('@abujude/sgs-khadamati');
 const { check, query, body , param} = require('express-validator');
-const Joi = require('joi');
-const bookSchema = require('../Validations/book.validation.schema');
+const schema = require('../Validations/bookSchemas');
+
 
 const Router = express.Router();
 
@@ -41,7 +41,7 @@ const bookValidations = [
 ]
 
 Router.post('/'
-    , bookSchema.validate
+    , checkSchema(schema.bookPost)
     , checkValidationResults
     , authMiddleware
     , booksController.createBook);

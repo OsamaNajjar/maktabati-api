@@ -86,7 +86,7 @@ exports.createBook = async (bookDTO) => {
         const result = await Item.create(bookModel, {
             include: [Book] 
         });
-
+        
         return result;
 
     } catch(error) {
