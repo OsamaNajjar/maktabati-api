@@ -27,10 +27,10 @@ exports.checkValidationResults = (req, res, next) => {
 //     return next();
 // }
 
-exports.checkSchema = (schema) => {
+exports.checkSchema = (schema, data) => {
     return (req, res, next) =>{
 
-        const { error } = schema.validate(req.body); 
+        const { error } = schema.validate(req[data]); 
         const valid = error == null; 
   
         if (valid) { 

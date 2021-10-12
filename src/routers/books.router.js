@@ -41,7 +41,7 @@ const bookValidations = [
 ]
 
 Router.post('/'
-    , checkSchema(schema.bookPost)
+    , checkSchema(schema.bookPost,'body')
     , checkValidationResults
     , authMiddleware
     , booksController.createBook);
